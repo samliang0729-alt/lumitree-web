@@ -125,7 +125,7 @@ function LumiTreeWeb() {
       let h = 0;
       childrenMap[nodeId].forEach((child, i) => {
         h += calcHeight(child.id);
-        if (i \u003c childrenMap[nodeId].length - 1) h += VERTICAL_SPACING;
+        if (i < childrenMap[nodeId].length - 1) h += VERTICAL_SPACING;
       });
       heights[nodeId] = h;
       return h;

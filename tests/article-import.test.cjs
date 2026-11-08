@@ -10,3 +10,7 @@ const many=Array.from({length:30},(_,i)=>[{text:'章節 '+i,heading:true},{text:
 assert.equal(context.decodeArticleText(new TextEncoder().encode('繁體中文測試').buffer),'繁體中文測試');assert.throws(()=>context.decodeArticleText(Uint8Array.from([0xff,0xff,0xff]).buffer),/UTF-8/);assert.throws(()=>context.articleOutline([], '空白'),/找不到/);
 const malicious=context.articleOutline([{text:'<script>alert(1)</script> 這是一篇設備管理文章，請落實每日點檢。',heading:false}],'測試');assert(malicious.includes('<script>')); // Output is text, never executed as markup.
 console.log('Passed: heading preservation, unstructured article grouping, bounded branches, UTF-8 decoding, invalid encoding/empty input handling, text-only outline output.');
+
+const nested=context.articleOutline([{text:'規劃',heading:true,level:1},{text:'目標設定',heading:true,level:2},{text:'短期目標',heading:true,level:3},{text:'設定每月可追蹤的成果。',heading:false}],'專案',10,3,5);
+assert(nested.includes('  規劃\n    目標設定\n      短期目標\n        設定每月可追蹤的成果。'));assert.equal(context.headingLevel('1.2.3 執行步驟'),3);
+console.log('Passed: five-level source hierarchy including parent headings with no direct paragraphs.');
